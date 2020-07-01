@@ -16,6 +16,16 @@
 
         </activity>
         <activity android:name=".recycler.view.ThirdActivity">
+
+        </activity>
+
+        <activity android:name=".rxJava.AsyncActivity">
+
+        </activity>
+        <activity android:name=".rxJava.observer.SpamActivity">
+
+        </activity>
+        <activity android:name=".rxJava.message.RxActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
