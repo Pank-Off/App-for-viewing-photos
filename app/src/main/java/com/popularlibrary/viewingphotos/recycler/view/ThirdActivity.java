@@ -1,5 +1,6 @@
 package com.popularlibrary.viewingphotos.recycler.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import moxy.presenter.InjectPresenter;
 
 public class ThirdActivity extends MvpAppCompatActivity implements ThirdView {
 
+    public static final String EXTRA = "EXTRA";
     RecyclerView recyclerView;
 
     ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(
@@ -48,7 +50,10 @@ public class ThirdActivity extends MvpAppCompatActivity implements ThirdView {
         recyclerView.setLayoutManager(layoutManager);
         Adapter myAdapter = new Adapter(arrayList, position -> {
             Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
-            thirdPresenter.setOnItemClickListener();
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(EXTRA, arrayList.get(position));
+            startActivity(intent);
+            thirdPresenter.setOnItemClickListener(position);
         }
         );
         recyclerView.setAdapter(myAdapter);
@@ -57,5 +62,9 @@ public class ThirdActivity extends MvpAppCompatActivity implements ThirdView {
     @Override
     public void showCount(int count) {
         Log.d("Count", count + "");
+    }
+
+    @Override
+    public void showNumber(int number) {
     }
 }
