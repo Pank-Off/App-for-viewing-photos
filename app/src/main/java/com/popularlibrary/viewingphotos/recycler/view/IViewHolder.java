@@ -4,4 +4,5 @@ public interface IViewHolder {
     int getPos();
 
     void setImage(String url);
+
 }
