@@ -1,5 +1,6 @@
 package com.popularlibrary.viewingphotos.recycler.presenter;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 
@@ -8,6 +9,7 @@ import com.popularlibrary.viewingphotos.recycler.model.Model;
 import com.popularlibrary.viewingphotos.recycler.model.entity.Hit;
 import com.popularlibrary.viewingphotos.recycler.model.entity.Photo;
 import com.popularlibrary.viewingphotos.recycler.model.retrofit.IApiHelper;
+import com.popularlibrary.viewingphotos.recycler.model.room.Image;
 import com.popularlibrary.viewingphotos.recycler.model.room.ImgDao;
 import com.popularlibrary.viewingphotos.recycler.view.IViewHolder;
 import com.popularlibrary.viewingphotos.recycler.view.MainView;
@@ -31,16 +33,17 @@ public class MainPresenter extends MvpPresenter<MainView> {
     private RecyclerMain recyclerMain;
     private List<Hit> hitList;
     private ImgDao imgDao;
+    private List<Image> imageList;
 
     @Inject
     IApiHelper apiHelper;
 
     public MainPresenter() {
         recyclerMain = new RecyclerMain();
-      //  apiHelper = new IApiHelper();
+        //  apiHelper = new IApiHelper();
         model = new Model();
 
-//        imgDao = App.getAppDatabase().imgDao();
+        imgDao = App.getAppDatabase().imgDao();
     }
 
     public void setOnItemClickListener(int position) {
@@ -51,70 +54,82 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     @Override
     protected void onFirstViewAttach() {
-       /** if(базы нет) {*/
-            getAllPhoto();
-      /**  }else{
-            getDataFromDB();
-        }*/
+        getAllPhoto();
     }
 
     private void getAllPhoto() {
         App.getAppComponent().inject(this);
-        Observable<Photo> single = apiHelper.requestServer();
+        getDataFromDB();
+        if (imageList == null) {
+            Observable<Photo> single = apiHelper.requestServer();
 
-        Disposable disposable = single.observeOn(AndroidSchedulers.mainThread()).subscribe(photos -> {
-            //Log.d(TAG, "onNext: " + photos.totalHits);
+            Disposable disposable = single.observeOn(AndroidSchedulers.mainThread()).subscribe(photos -> {
+                //Log.d(TAG, "onNext: " + photos.totalHits);
 
 //            for (Photo.Hit hit : photos.hits) {
 //                Log.d(TAG, "getAllPhoto: " + hit.webformatURL);
 //            }
-            hitList = photos.hits;
+                hitList = photos.hits;
+                putListData();
+                getViewState().updateRecyclerView();
 
-/**Где то здесь надо сохранить в базу то ли список URL, то ли фотки по отдельности?*/
-            getViewState().updateRecyclerView();
+            }, throwable -> {
+                Log.e(TAG, "onError " + throwable);
+            });
 
-        }, throwable -> {
-            Log.e(TAG, "onError " + throwable);
-        });
-
-        putListData();
+        }
     }
 
     private void putListData() {
+        for (int i = 0; i < hitList.size(); i++) {
+            Image image = new Image(hitList.get(i));
+            Disposable disposable = imgDao.insert(image).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(id -> {
+                        Log.d(TAG, "putData: " + id);
+                    }, throwable -> {
+                        Log.d(TAG, "putData: " + throwable);
+                    });
 
-//        List<Image> images = new ArrayList<>();
-//
-//        images.add(new Image(hitList.get(0)));
-//        images.add(new Image(hitList.get(1)));
-//        images.add(new Image(hitList.get(2)));
-//        Disposable disposable = insertList(images).observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(photos->{
-//
-//                }, throwable -> {
-//                    Log.d(TAG, "putList " + throwable);
-//                });
+            //  imgDao.insert(image);
+            Log.d("HIT: " + i, String.valueOf(hitList.get(i).webformatURL));
+        }
+
     }
 
-    void getDataFromDB(){
+    private void getDataFromDB() {
 
         Disposable disposable = imgDao.getAll().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(photos -> {
-
+                    Log.d("SIZE ", photos.size() + "");
+                    for (int i = 0; i < photos.size(); i++) {
+                        Log.d("SIZE ", photos.get(i).getURL() + "");
+                    }
+                    imageList = photos;
+                    getViewState().updateRecyclerView();
                 }, throwable -> {
                     Log.d(TAG, "getData: " + throwable);
                 });
     }
+
     private class RecyclerMain implements I2RecyclerMain {
 
         @Override
         public void bindView(IViewHolder iViewHolder) {
-            iViewHolder.setImage(hitList.get(iViewHolder.getPos()).webformatURL);
+            if (imageList.size() != 0) {
+                Log.d("LIST", imageList + "");
+                iViewHolder.setImage(imageList.get(iViewHolder.getPos()).getURL());
+            } else {
+                iViewHolder.setImage(hitList.get(iViewHolder.getPos()).webformatURL);
+            }
         }
 
         @Override
         public int getItemCount() {
             if (hitList != null) {
                 return hitList.size();
+            }
+            if (imageList != null) {
+                return imageList.size();
             }
             return 0;
         }

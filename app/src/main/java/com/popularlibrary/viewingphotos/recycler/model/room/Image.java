@@ -10,14 +10,18 @@ public class Image {
     @PrimaryKey(autoGenerate = true)
     int id;
 
-   String URL;
+    public String URL;
 
-    Image() {
+    public Image() {
 
     }
 
     public Image(Hit hit) {
-     URL = hit.webformatURL;
+        URL = hit.webformatURL;
+    }
+
+    public String getURL(){
+        return URL;
     }
 
 }
