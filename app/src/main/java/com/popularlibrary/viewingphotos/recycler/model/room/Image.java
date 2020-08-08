@@ -10,9 +10,9 @@ public class Image {
     @PrimaryKey(autoGenerate = true)
     int id;
 
-    public String URL;
+    String URL;
 
-    public Image() {
+    Image() {
 
     }
 

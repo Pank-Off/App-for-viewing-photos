@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".recycler.app.App"
+        android:name=".leak.LeakApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,20 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-
-        <activity android:name=".recycler.view.MainActivity">
+        <activity android:name=".leak.LeakActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".recycler.view.DetailActivity" />
-
-        <activity android:name=".espressotest.EspressoTestActivity">
+        <activity android:name=".recycler.view.MainActivity">
 
         </activity>
+        <activity android:name=".recycler.view.DetailActivity" />
     </application>
 
 </manifest>

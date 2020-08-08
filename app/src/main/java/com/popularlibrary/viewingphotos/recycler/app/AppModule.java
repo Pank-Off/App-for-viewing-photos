@@ -2,6 +2,7 @@ package com.popularlibrary.viewingphotos.recycler.app;
 
 import android.app.Application;
 
+import com.popularlibrary.viewingphotos.recycler.model.Model;
 import com.popularlibrary.viewingphotos.recycler.model.retrofit.IApiHelper;
 
 import javax.inject.Singleton;
@@ -14,7 +15,7 @@ class AppModule {
 
     private final Application application;
 
-    AppModule(Application application){
+    AppModule(Application application) {
         this.application = application;
     }
 
@@ -23,4 +24,11 @@ class AppModule {
     IApiHelper provideOne() {
         return new IApiHelper();
     }
+
+    @Singleton
+    @Provides
+    Model provideTwo() {
+        return new Model();
+    }
+
 }
