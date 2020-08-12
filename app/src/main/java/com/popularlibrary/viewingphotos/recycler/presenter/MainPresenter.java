@@ -1,8 +1,6 @@
 package com.popularlibrary.viewingphotos.recycler.presenter;
 
-import android.provider.ContactsContract;
 import android.util.Log;
-
 
 import com.popularlibrary.viewingphotos.recycler.app.App;
 import com.popularlibrary.viewingphotos.recycler.model.Model;

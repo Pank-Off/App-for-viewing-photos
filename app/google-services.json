@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "195686895212",
+    "firebase_url": "https://viewingphotos-9b261.firebaseio.com",
+    "project_id": "viewingphotos-9b261",
+    "storage_bucket": "viewingphotos-9b261.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195686895212:android:e9bf278edfc51798405249",
+        "android_client_info": {
+          "package_name": "com.popularlibrary.viewingphotos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195686895212-hmfati75f5fhlhhgrbfjnfo5clb7r8to.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQRVigdeYYohLhPfv0nmPr3qlLXaKQJlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195686895212-hmfati75f5fhlhhgrbfjnfo5clb7r8to.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

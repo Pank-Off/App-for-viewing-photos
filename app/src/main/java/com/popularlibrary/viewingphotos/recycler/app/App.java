@@ -3,10 +3,9 @@ package com.popularlibrary.viewingphotos.recycler.app;
 import android.app.Application;
 
 import androidx.room.Room;
-import androidx.room.migration.Migration;
-
 
 import com.popularlibrary.viewingphotos.recycler.model.room.AppDatabase;
+import com.squareup.leakcanary.LeakCanary;
 
 public class App extends Application {
 
@@ -16,10 +15,23 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        appDatabase =
-                Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "room_database").build();
+
+        initLeakCanary();
+        appDatabase = generateAppDataBase();
+
         appComponent = generateAppComponent();
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
+    }
+
+    private AppDatabase generateAppDataBase() {
+        return Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "room_database").build();
     }
 
     public static AppDatabase getAppDatabase() {
@@ -30,7 +42,7 @@ public class App extends Application {
         return appComponent;
     }
 
-    public AppComponent generateAppComponent(){
+    public AppComponent generateAppComponent() {
         return DaggerAppComponent
                 .builder()
                 .appModule(new AppModule(this))
