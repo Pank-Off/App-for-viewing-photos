@@ -1,8 +1,6 @@
 package com.popularlibrary.viewingphotos.recycler.presenter;
 
-import android.provider.ContactsContract;
 import android.util.Log;
-
 
 import com.popularlibrary.viewingphotos.recycler.app.App;
 import com.popularlibrary.viewingphotos.recycler.model.Model;
@@ -29,7 +27,6 @@ import moxy.MvpPresenter;
 public class MainPresenter extends MvpPresenter<MainView> {
 
     private static final String TAG = "MainPresenter";
-    private Model model;
     private RecyclerMain recyclerMain;
     private List<Hit> hitList;
     private ImgDao imgDao;
@@ -38,15 +35,16 @@ public class MainPresenter extends MvpPresenter<MainView> {
     @Inject
     IApiHelper apiHelper;
 
+    @Inject
+    Model model;
+
     public MainPresenter() {
         recyclerMain = new RecyclerMain();
-        //  apiHelper = new IApiHelper();
-        model = new Model();
-
         imgDao = App.getAppDatabase().imgDao();
     }
 
     public void setOnItemClickListener(int position) {
+
         model.setData(position);
         int count = model.getCount();
         getViewState().showCount(count);
@@ -54,21 +52,18 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     @Override
     protected void onFirstViewAttach() {
+        App.getAppComponent().inject(this);
         getAllPhoto();
     }
 
     private void getAllPhoto() {
-        App.getAppComponent().inject(this);
+
         getDataFromDB();
         if (imageList == null) {
             Observable<Photo> single = apiHelper.requestServer();
 
             Disposable disposable = single.observeOn(AndroidSchedulers.mainThread()).subscribe(photos -> {
-                //Log.d(TAG, "onNext: " + photos.totalHits);
 
-//            for (Photo.Hit hit : photos.hits) {
-//                Log.d(TAG, "getAllPhoto: " + hit.webformatURL);
-//            }
                 hitList = photos.hits;
                 putListData();
                 getViewState().updateRecyclerView();
@@ -90,7 +85,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
                         Log.d(TAG, "putData: " + throwable);
                     });
 
-            //  imgDao.insert(image);
             Log.d("HIT: " + i, String.valueOf(hitList.get(i).webformatURL));
         }
 

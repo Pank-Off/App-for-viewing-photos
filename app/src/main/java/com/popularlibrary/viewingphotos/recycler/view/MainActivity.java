@@ -1,6 +1,9 @@
 package com.popularlibrary.viewingphotos.recycler.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,7 +39,21 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         recyclerView = findViewById(R.id.recycler);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
-        myAdapter = new Adapter(context, mainPresenter.getRecyclerMain(), (position, img) -> Toast.makeText(context, position + " ", Toast.LENGTH_LONG).show());
+        myAdapter = new Adapter(context, mainPresenter.getRecyclerMain(), (position, img) ->
+        {
+            Toast.makeText(context, position + " ", Toast.LENGTH_LONG).show();
+            Bundle extras = new Bundle();
+
+            Bitmap bitmap = Bitmap.createBitmap(img.getWidth(),img.getHeight(),Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            img.draw(canvas);
+            extras.putParcelable(EXTRA,bitmap);
+
+            Intent intent = new Intent(this,DetailActivity.class);
+            intent.putExtras(extras);
+            startActivity(intent);
+        }
+        );
         recyclerView.setAdapter(myAdapter);
     }
 

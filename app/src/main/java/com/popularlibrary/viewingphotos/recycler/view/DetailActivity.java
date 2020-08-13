@@ -1,12 +1,11 @@
 package com.popularlibrary.viewingphotos.recycler.view;
 
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.popularlibrary.viewingphotos.R;
 import com.popularlibrary.viewingphotos.recycler.presenter.DetailPresenter;
@@ -26,14 +25,17 @@ public class DetailActivity extends MvpAppCompatActivity implements MainView {
     @BindView(R.id.image)
     ImageView imageView;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
-        imageView.setImageResource((Integer) getIntent().getExtras().get(EXTRA));
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            Bitmap bmp = extras.getParcelable(EXTRA);
+            imageView.setImageBitmap(bmp);
+        }
         detailPresenter.getNumber();
     }
 
