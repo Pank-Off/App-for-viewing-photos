@@ -3,6 +3,7 @@ package com.popularlibrary.viewingphotos.recycler.app;
 import android.app.Application;
 
 import androidx.room.Room;
+import androidx.room.migration.Migration;
 
 
 import com.popularlibrary.viewingphotos.recycler.model.room.AppDatabase;
