@@ -9,15 +9,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.popularlibrary.viewingphotos.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 public class RxActivity extends AppCompatActivity {
     private static final String TAG = "RxActivity";
+    @BindView(R.id.subscribeBtn)
     Button subscribe;
+    @BindView(R.id.unsubscribeBtn)
     Button unsubscribe;
+
     RxPresenter rxPresenter;
     Observable<String> observable;
     Disposable disposable;
@@ -27,42 +32,23 @@ public class RxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rxjava3);
 
-        subscribe = findViewById(R.id.subscribeBtn);
-        unsubscribe = findViewById(R.id.unsubscribeBtn);
+        ButterKnife.bind(this);
         rxPresenter = new RxPresenter();
         observable = rxPresenter.getMessage();
-        subscribe();
-        unsubscribe();
     }
 
-    void subscribe() {
-        subscribe.setOnClickListener(v -> {
-            observable.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                    Log.d(TAG, "onSubscribe: ");
-                    RxActivity.this.disposable = d;
-                }
+    @OnClick(R.id.subscribeBtn)
+    public void subscribe() {
+        disposable =
+                observable.observeOn(AndroidSchedulers.mainThread()).subscribe(
+                        string -> Log.d(TAG, "onNext: " + Thread.currentThread().getName() + ": " + string),
+                        throwable -> Log.e(TAG, "onError: " + throwable),
+                        () -> Log.d(TAG, "onComplete: "));
+        Log.d(TAG, "subscribe: end " + Thread.currentThread().getName());
 
-                @Override
-                public void onNext(String s) {
-                    Log.d(TAG, "onNext: " + Thread.currentThread().getName() + ": " + s);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.e(TAG, "onError: " + e);
-                }
-
-                @Override
-                public void onComplete() {
-                    Log.d(TAG, "onComplete: ");
-                }
-            });
-            Log.d(TAG, "subscribe: end " + Thread.currentThread().getName());
-        });
     }
 
+    @OnClick(R.id.unsubscribeBtn)
     public void unsubscribe() {
         unsubscribe.setOnClickListener(v -> disposable.dispose());
     }

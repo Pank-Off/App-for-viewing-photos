@@ -15,8 +15,8 @@ public class ThirdPresenter extends MvpPresenter<ThirdView> {
         model = new Model();
     }
 
-    public void setOnItemClickListener() {
-        model.setCount();
+    public void setOnItemClickListener(int position) {
+        model.setData(position);
         int count = model.getCount();
         getViewState().showCount(count);
     }

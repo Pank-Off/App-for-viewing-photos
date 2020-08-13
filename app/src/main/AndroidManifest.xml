@@ -9,20 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".standart.view.MainActivity">
 
-        </activity>
-        <activity android:name=".moxy.view.SecondActivity">
-
-        </activity>
         <activity android:name=".recycler.view.ThirdActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".recycler.view.DetailActivity" />
 
-        <activity android:name=".rxJava.AsyncActivity">
-
-        </activity>
-        <activity android:name=".rxJava.observer.SpamActivity">
+        <activity android:name=".rxJava.single.SingleActivity">
 
         </activity>
         <activity android:name=".rxJava.message.RxActivity">
