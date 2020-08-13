@@ -16,9 +16,9 @@ import butterknife.ButterKnife;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
-import static com.popularlibrary.viewingphotos.recycler.view.ThirdActivity.EXTRA;
+import static com.popularlibrary.viewingphotos.recycler.view.MainActivity.EXTRA;
 
-public class DetailActivity extends MvpAppCompatActivity implements ThirdView {
+public class DetailActivity extends MvpAppCompatActivity implements MainView {
 
     @InjectPresenter
     DetailPresenter detailPresenter;
@@ -33,7 +33,6 @@ public class DetailActivity extends MvpAppCompatActivity implements ThirdView {
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
-
         imageView.setImageResource((Integer) getIntent().getExtras().get(EXTRA));
         detailPresenter.getNumber();
     }
@@ -46,5 +45,10 @@ public class DetailActivity extends MvpAppCompatActivity implements ThirdView {
     @Override
     public void showNumber(int number) {
         Log.d(getClass().getSimpleName() + " Number: ", number + "");
+    }
+
+    @Override
+    public void updateRecyclerView() {
+
     }
 }
