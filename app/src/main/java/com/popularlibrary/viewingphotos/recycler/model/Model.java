@@ -1,11 +1,5 @@
 package com.popularlibrary.viewingphotos.recycler.model;
 
-import android.util.Log;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.schedulers.Schedulers;
-
 public class Model {
     private static final String TAG = "Model";
     private int count = 0;
@@ -24,6 +18,4 @@ public class Model {
         this.count++;
         number = position;
     }
-
-
 }
