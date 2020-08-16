@@ -44,7 +44,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     public void setOnItemClickListener(int position) {
-
         model.setData(position);
         int count = model.getCount();
         getViewState().showCount(count);
@@ -57,9 +56,14 @@ public class MainPresenter extends MvpPresenter<MainView> {
     }
 
     private void getAllPhoto() {
-
         getDataFromDB();
-        if (imageList == null) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("imageList", String.valueOf(imageList.size()));
+        if (imageList.size() == 0) {
             Observable<Photo> single = apiHelper.requestServer();
 
             Disposable disposable = single.observeOn(AndroidSchedulers.mainThread()).subscribe(photos -> {
@@ -71,7 +75,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
             }, throwable -> {
                 Log.e(TAG, "onError " + throwable);
             });
-
         }
     }
 
@@ -92,7 +95,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private void getDataFromDB() {
 
-        Disposable disposable = imgDao.getAll().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        Disposable disposable = imgDao.getAll().subscribeOn(Schedulers.io())
                 .subscribe(photos -> {
                     Log.d("SIZE ", photos.size() + "");
                     for (int i = 0; i < photos.size(); i++) {
@@ -100,9 +103,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     }
                     imageList = photos;
                     getViewState().updateRecyclerView();
-                }, throwable -> {
-                    Log.d(TAG, "getData: " + throwable);
-                });
+                }, throwable ->
+                        Log.d(TAG, "getData: " + throwable));
     }
 
     private class RecyclerMain implements I2RecyclerMain {

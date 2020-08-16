@@ -1,5 +1,6 @@
 package com.popularlibrary.viewingphotos.recycler.app;
 
+import com.popularlibrary.viewingphotos.recycler.model.retrofit.IApiHelper;
 import com.popularlibrary.viewingphotos.recycler.presenter.DetailPresenter;
 import com.popularlibrary.viewingphotos.recycler.presenter.MainPresenter;
 
@@ -12,4 +13,5 @@ import dagger.Component;
 public interface AppComponent {
     void inject(MainPresenter mainPresenter);
     void inject(DetailPresenter detailPresenter);
+    void inject(IApiHelper iApiHelper);
 }

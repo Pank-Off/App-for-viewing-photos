@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".test.TestActivity">
 
-
+        </activity>
         <activity android:name=".recycler.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

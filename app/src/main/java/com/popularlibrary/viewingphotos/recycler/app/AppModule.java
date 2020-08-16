@@ -2,6 +2,8 @@ package com.popularlibrary.viewingphotos.recycler.app;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.popularlibrary.viewingphotos.recycler.model.Model;
 import com.popularlibrary.viewingphotos.recycler.model.retrofit.IApiHelper;
 
@@ -29,6 +31,14 @@ class AppModule {
     @Provides
     Model provideTwo() {
         return new Model();
+    }
+
+    @Singleton
+    @Provides
+    Gson provideThree() {
+        return new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
     }
 
 }

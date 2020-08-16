@@ -12,7 +12,7 @@ public class Image {
 
     String URL;
 
-    public Image() {
+    Image() {
 
     }
 
@@ -20,7 +20,7 @@ public class Image {
         URL = hit.webformatURL;
     }
 
-    public String getURL(){
+    public String getURL() {
         return URL;
     }
 
