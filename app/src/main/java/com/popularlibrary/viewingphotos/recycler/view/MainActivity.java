@@ -41,6 +41,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         recyclerView.setLayoutManager(layoutManager);
         myAdapter = new Adapter(context, mainPresenter.getRecyclerMain(), (position, img) ->
         {
+            mainPresenter.setOnItemClickListener(position);
             Toast.makeText(context, position + " ", Toast.LENGTH_LONG).show();
             Bundle extras = new Bundle();
 
@@ -62,9 +63,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         Log.d("Count", count + "");
     }
 
-    @Override
-    public void showNumber(int number) {
-    }
 
     @Override
     public void updateRecyclerView() {

@@ -17,7 +17,7 @@ import moxy.presenter.InjectPresenter;
 
 import static com.popularlibrary.viewingphotos.recycler.view.MainActivity.EXTRA;
 
-public class DetailActivity extends MvpAppCompatActivity implements MainView {
+public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @InjectPresenter
     DetailPresenter detailPresenter;
@@ -40,17 +40,8 @@ public class DetailActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void showCount(int count) {
-
-    }
-
-    @Override
     public void showNumber(int number) {
         Log.d(getClass().getSimpleName() + " Number: ", number + "");
     }
 
-    @Override
-    public void updateRecyclerView() {
-
-    }
 }
